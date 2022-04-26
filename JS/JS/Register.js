@@ -120,7 +120,7 @@ id_3.addEventListener("click", (event)=>{
 // id의 value 값이 변경된다면 false 부여 & 정규표현식 검증 후 통과하면 id_4 display none으로 id_Regex true로 설정
 id_2.addEventListener("change", ()=>{
     id_confirm = false;
-    let regex = /[A-Za-z0-9]{4,12}/;
+    let regex = /^[A-Za-z0-9+]{4,12}$/;
     if(regex.test(id_2.value)) {
         id_Regex = true;
         id_4.style.display = "none";
