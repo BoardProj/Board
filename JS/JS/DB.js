@@ -25,9 +25,7 @@ app.get('/test', (req, res) => {
     var connection = mysql.createConnection(conn); // DB 커넥션 생성
     connection.connect();   // DB 접속
     
-    var testQuery = "SELECT * FROM board_info;";
-    
-    connection.query(testQuery, function (err, results, fields) { // testQuery 실행
+    connection.query(req.headers.query, function (err, results, fields) { // testQuery 실행
         if (err) {
             console.log(err);
         }

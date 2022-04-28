@@ -501,6 +501,7 @@ delete_button.addEventListener("click", ()=> {
 	    httpRequest.responseType = "json";
 	    /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */
 	    httpRequest.setRequestHeader('Content-Type', 'application/json');
+        httpRequest.setRequestHeader('query', 'SELECT * FROM user_info');
 	    /* 정의된 서버에 Json 형식의 요청 Data를 포함하여 요청을 전송 */
 	    httpRequest.send();
 })
