@@ -249,8 +249,36 @@ id_3.addEventListener("click", (event)=>{
         alert("아이디를 확인해주세요!");
         return;
     }
-    alert("중복체크 완료!");
-    id_confirm = true;
+        /* 통신에 사용 될 XMLHttpRequest 객체 정의 */
+		httpRequest = new XMLHttpRequest();
+		/* httpRequest의 readyState가 변화했을때 함수 실행 */
+	    httpRequest.onreadystatechange = () => {
+	    	/* readyState가 Done이고 응답 값이 200일 때, 받아온 response로 name과 age를 그려줌 */
+		if (httpRequest.readyState === XMLHttpRequest.DONE) {
+			if (httpRequest.status === 200) {
+			    result = httpRequest.response;
+                console.log(result);
+                for(let i = 0; i < result.length; i++) {
+                    if(id_2.value == result[i].user_id) {
+                        alert("중복된 아이디입니다!");
+                        return;
+                    }
+                }
+                id_confirm = true;
+                alert("중복되지 않은 아이디입니다.");
+			    } else {
+			        alert('request에 뭔가 문제가 있어요.');
+			    }
+			}
+	    };
+	    /* Post 방식으로 요청 */
+	    httpRequest.open('GET', 'http://127.0.0.1:3000/list', true);
+	    /* Response Type을 Json으로 사전 정의 */
+	    httpRequest.responseType = "json";
+	    /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */
+	    httpRequest.setRequestHeader('Content-Type', 'application/json');
+	    /* 정의된 서버에 Json 형식의 요청 Data를 포함하여 요청을 전송 */
+	    httpRequest.send();
 });
 
 // id의 value 값이 변경된다면 false 부여 & 정규표현식 검증 후 통과하면 id_4 display none으로 id_Regex true로 설정
@@ -487,6 +515,33 @@ confirm.addEventListener("click", ()=>{
         email : form.elements[6].value + "@" + form.elements[7].value,
     }
     console.log(data);
+
+        /* 통신에 사용 될 XMLHttpRequest 객체 정의 */
+		httpRequest = new XMLHttpRequest();
+		/* httpRequest의 readyState가 변화했을때 함수 실행 */
+	    httpRequest.onreadystatechange = () => {
+	    	/* readyState가 Done이고 응답 값이 200일 때, 받아온 response로 name과 age를 그려줌 */
+		if (httpRequest.readyState === XMLHttpRequest.DONE) {
+			if (httpRequest.status === 200) {
+			    let result = httpRequest.response;
+                console.log(result);
+                alert("회원가입을 축하합니다!");
+                location.reload();
+			    } else {
+			        alert('request에 뭔가 문제가 있어요.');
+			    }
+			}
+	    };
+	    /* Post 방식으로 요청 */
+	    httpRequest.open('POST', 'http://127.0.0.1:3000/test', true);
+	    /* Response Type을 Json으로 사전 정의 */
+	    httpRequest.responseType = "json";
+	    /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */
+	    httpRequest.setRequestHeader('Content-Type', 'application/json');
+        // 1은 쿠키에서 가져오는 값
+        httpRequest.setRequestHeader('data', JSON.stringify(data));
+	    /* 정의된 서버에 Json 형식의 요청 Data를 포함하여 요청을 전송 */
+	    httpRequest.send();
 })
 document.querySelector('body').appendChild(horizon.cloneNode(true));
 document.querySelector('body').appendChild(br.cloneNode(true));
