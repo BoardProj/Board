@@ -249,6 +249,9 @@ id_3.addEventListener("click", (event)=>{
         alert("아이디를 확인해주세요!");
         return;
     }
+        /*
+            전체아이디 조회 후 중복검증
+        */
         /* 통신에 사용 될 XMLHttpRequest 객체 정의 */
 		httpRequest = new XMLHttpRequest();
 		/* httpRequest의 readyState가 변화했을때 함수 실행 */
@@ -508,6 +511,10 @@ confirm.addEventListener("click", ()=>{
     // for(let i = 0; i < form.elements.length; i++) {
     //     console.log(form.elements[i]);
     // }
+
+    /*
+        회원정보생성(INSERT)
+    */
     const data = {
         id : form.elements[1].value,
         pw : form.elements[3].value,

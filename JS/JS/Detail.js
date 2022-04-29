@@ -153,6 +153,9 @@ id_button.addEventListener("click", ()=> {
             alert("아이디를 확인해주세요!");
             return;
         }
+        /*
+            전체아이디 조회 후 중복검증
+        */
         /* 통신에 사용 될 XMLHttpRequest 객체 정의 */
 		httpRequest = new XMLHttpRequest();
 		/* httpRequest의 readyState가 변화했을때 함수 실행 */
@@ -511,6 +514,10 @@ const main_button = document.createElement('button');
 main_button.innerHTML="메인으로";
 
 let result;
+
+/*
+    해당회원정보조회(GET)
+*/
 window.onload = ()=> {
     
 		/* 통신에 사용 될 XMLHttpRequest 객체 정의 */
@@ -570,6 +577,9 @@ window.onload = ()=> {
 	    httpRequest.send();
 };
 
+/*
+    해당회원정보업데이트(UPDATE)
+*/
 function update(division, value) {
         /* 통신에 사용 될 XMLHttpRequest 객체 정의 */
 		httpRequest = new XMLHttpRequest();
