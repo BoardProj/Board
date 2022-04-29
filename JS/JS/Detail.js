@@ -48,7 +48,7 @@ name_button.addEventListener("click", ()=> {
 
     const name_modal_text_1 = document.createElement('p');
     name_modal_text_1.className = "text";
-    name_modal_text_1.innerHTML = "현재 이름 : " + "****";
+    name_modal_text_1.innerHTML = "현재 이름 : " + result[0].user_name;
     modal_wrap.appendChild(name_modal_text_1);
 
     const name_modal_text_2 = document.createElement('p');
@@ -78,6 +78,10 @@ name_button.addEventListener("click", ()=> {
     name_modal_button_5.innerHTML="Closed";
     modal_wrap.appendChild(name_modal_button_5);
 
+    name_modal_button_4.addEventListener('click', ()=> {
+        update("user_name", name_modal_input_3.value);
+    })
+
     //Close 버튼 누르면 Modal창 display none & 자식노드 모두 제거
     name_modal_button_5.addEventListener("click", ()=> {
     modal_background.style.display="none";
@@ -86,7 +90,7 @@ name_button.addEventListener("click", ()=> {
     while ( modal_wrap.hasChildNodes() ) { 
         modal_wrap.removeChild( modal_wrap.firstChild );
     }
-    })
+    });
 
     modal_background.style.display="block";
     modal_wrap.style.display="block";
@@ -117,7 +121,7 @@ id_button.addEventListener("click", ()=> {
 
     const id_modal_text_1 = document.createElement('p');
     id_modal_text_1.className = "text";
-    id_modal_text_1.innerHTML = "현재 아이디 : " + "****";
+    id_modal_text_1.innerHTML = "현재 아이디 : " + result[0].user_id;
     modal_wrap.appendChild(id_modal_text_1);
 
     const id_modal_text_2 = document.createElement('p');
@@ -149,8 +153,36 @@ id_button.addEventListener("click", ()=> {
             alert("아이디를 확인해주세요!");
             return;
         }
-        alert("중복체크 완료!");
-        id_confirm = true;
+        /* 통신에 사용 될 XMLHttpRequest 객체 정의 */
+		httpRequest = new XMLHttpRequest();
+		/* httpRequest의 readyState가 변화했을때 함수 실행 */
+	    httpRequest.onreadystatechange = () => {
+	    	/* readyState가 Done이고 응답 값이 200일 때, 받아온 response로 name과 age를 그려줌 */
+		if (httpRequest.readyState === XMLHttpRequest.DONE) {
+			if (httpRequest.status === 200) {
+			    result = httpRequest.response;
+                console.log(result);
+                for(let i = 0; i < result.length; i++) {
+                    if(id_modal_input_3.value == result[i].user_id) {
+                        alert("중복된 아이디입니다!");
+                        return;
+                    }
+                }
+                id_confirm = true;
+                alert("중복되지 않은 아이디입니다.");
+			    } else {
+			        alert('request에 뭔가 문제가 있어요.');
+			    }
+			}
+	    };
+	    /* Post 방식으로 요청 */
+	    httpRequest.open('GET', 'http://127.0.0.1:3000/list', true);
+	    /* Response Type을 Json으로 사전 정의 */
+	    httpRequest.responseType = "json";
+	    /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */
+	    httpRequest.setRequestHeader('Content-Type', 'application/json');
+	    /* 정의된 서버에 Json 형식의 요청 Data를 포함하여 요청을 전송 */
+	    httpRequest.send();
     });
     modal_wrap.appendChild(id_modal_button_4);
     modal_wrap.appendChild(br.cloneNode(true));
@@ -185,7 +217,7 @@ id_button.addEventListener("click", ()=> {
             alert("아이디 중복체크를 해주세요!")
             return;
         }
-        alert("변경완료");
+        update("user_id", id_modal_input_3.value);
     });
 
     const id_modal_button_7 = document.createElement('button');
@@ -233,7 +265,7 @@ password_button.addEventListener("click", ()=> {
 
     const pw_modal_text_1 = document.createElement('p');
     pw_modal_text_1.className = "text";
-    pw_modal_text_1.innerHTML = "현재 비밀번호 : " + "****";
+    pw_modal_text_1.innerHTML = "현재 비밀번호 : " + result[0].user_password;
     modal_wrap.appendChild(pw_modal_text_1);
 
     const pw_modal_text_2 = document.createElement('p');
@@ -302,7 +334,7 @@ password_button.addEventListener("click", ()=> {
             alert("비밀번호가 다릅니다.")
             return;
         }
-        alert("변경완료");
+        update("user_password", pw_modal_input_3.value);
     });
 
     const pw_modal_button_8 = document.createElement('button');
@@ -350,7 +382,7 @@ email_button.addEventListener("click", ()=> {
 
     const email_modal_text_1 = document.createElement('p');
     email_modal_text_1.className = "text";
-    email_modal_text_1.innerHTML = "현재 이메일 : " + "****";
+    email_modal_text_1.innerHTML = "현재 이메일 : " + result[0].user_email;
     modal_wrap.appendChild(email_modal_text_1);
 
     const email_modal_text_2 = document.createElement('p');
@@ -432,13 +464,14 @@ email_button.addEventListener("click", ()=> {
     email_modal_button_8.innerHTML="Saved";
     modal_wrap.appendChild(email_modal_button_8);
 
-    //Save 버튼 누르면 중복체크 확인 후 저장
+    //Save 버튼 누르면 형식체크 확인 후 저장
     email_modal_button_8.addEventListener("click", ()=> {
         if(!email_Regex || !email_modal_input_5.value) {
             alert("이메일 형식을 맞춰주세요!")
             return;
         }
-        alert("변경완료");
+        let email = email_modal_input_3.value + "@" + email_modal_input_5.value;
+        update("user_email", email);
     });
 
     const email_modal_button_9 = document.createElement('button');
@@ -467,7 +500,7 @@ email_button.addEventListener("click", ()=> {
 
 const grade_1 = document.createElement('p');
 grade_1.style.display="inline-block";
-grade_1.innerHTML="회원등급";
+grade_1.innerHTML="회원상태";
 
 const grade_2 = document.createElement('p');
 grade_2.style.display="inline-block";
@@ -477,9 +510,8 @@ grade_2.innerHTML="****";
 const main_button = document.createElement('button');
 main_button.innerHTML="메인으로";
 
-const delete_button = document.createElement('button');
-delete_button.innerHTML="회원탈퇴";
-delete_button.addEventListener("click", ()=> {
+let result;
+window.onload = ()=> {
     
 		/* 통신에 사용 될 XMLHttpRequest 객체 정의 */
 		httpRequest = new XMLHttpRequest();
@@ -488,8 +520,38 @@ delete_button.addEventListener("click", ()=> {
 	    	/* readyState가 Done이고 응답 값이 200일 때, 받아온 response로 name과 age를 그려줌 */
 		if (httpRequest.readyState === XMLHttpRequest.DONE) {
 			if (httpRequest.status === 200) {
-			    var result = httpRequest.response;
-			    console.log(result);
+			    result = httpRequest.response;
+                console.log(result);
+			    name_2.innerHTML=result[0].user_name;
+                id_2.innerHTML=result[0].user_id;
+                password_2.innerHTML=result[0].user_password;
+                email_2.innerHTML=result[0].user_email;
+                if(result[0].user_status == 0) {
+                    grade_2.innerHTML="회원";
+                    const delete_button = document.createElement('button');
+                    delete_button.innerHTML="회원탈퇴";
+
+                    delete_button.addEventListener("click", ()=>{
+                        if(confirm("정말 탈퇴하시겠습니까?")) {
+                            update("user_status", 1);
+                        }
+                    })
+
+                    document.querySelector('body').appendChild(delete_button);
+                }
+                else {
+                    grade_2.innerHTML="탈퇴";
+                    const recovery_button = document.createElement('button');
+                    recovery_button.innerHTML="회원복구";
+
+                    recovery_button.addEventListener("click", ()=>{
+                        if(confirm("정말 복구하시겠습니까?")) {
+                            update("user_status", 0);
+                        }
+                    })
+
+                    document.querySelector('body').appendChild(recovery_button);
+                }
 			    } else {
 			        alert('request에 뭔가 문제가 있어요.');
 			    }
@@ -501,10 +563,49 @@ delete_button.addEventListener("click", ()=> {
 	    httpRequest.responseType = "json";
 	    /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */
 	    httpRequest.setRequestHeader('Content-Type', 'application/json');
-        httpRequest.setRequestHeader('query', 'SELECT * FROM user_info');
+        // 1은 쿠키에서 가져오는 값
+        let user_key = 1;
+        httpRequest.setRequestHeader('user_key', user_key);
 	    /* 정의된 서버에 Json 형식의 요청 Data를 포함하여 요청을 전송 */
 	    httpRequest.send();
-})
+};
+
+function update(division, value) {
+        /* 통신에 사용 될 XMLHttpRequest 객체 정의 */
+		httpRequest = new XMLHttpRequest();
+		/* httpRequest의 readyState가 변화했을때 함수 실행 */
+	    httpRequest.onreadystatechange = () => {
+	    	/* readyState가 Done이고 응답 값이 200일 때, 받아온 response로 name과 age를 그려줌 */
+		if (httpRequest.readyState === XMLHttpRequest.DONE) {
+			if (httpRequest.status === 200) {
+			    result = httpRequest.response;
+                console.log(result);
+                location.reload();
+                if(result[0].user_status == 0) {
+                    grade_2.innerHTML="회원";
+                }
+                else {
+                    grade_2.innerHTML="탈퇴";
+                }
+			    } else {
+			        alert('request에 뭔가 문제가 있어요.');
+			    }
+			}
+	    };
+	    /* Post 방식으로 요청 */
+	    httpRequest.open('PUT', 'http://127.0.0.1:3000/test', true);
+	    /* Response Type을 Json으로 사전 정의 */
+	    httpRequest.responseType = "json";
+	    /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */
+	    httpRequest.setRequestHeader('Content-Type', 'application/json');
+        // 1은 쿠키에서 가져오는 값
+        let user_key = 1;
+        httpRequest.setRequestHeader('user_key', user_key);
+        httpRequest.setRequestHeader('division', division);
+        httpRequest.setRequestHeader('value', value);
+	    /* 정의된 서버에 Json 형식의 요청 Data를 포함하여 요청을 전송 */
+	    httpRequest.send();
+}
 
 document.querySelector('body').appendChild(modal_background);
 document.querySelector('body').appendChild(modal_wrap);
@@ -562,7 +663,6 @@ document.querySelector('body').appendChild(hr.cloneNode(true));
 
 
 document.querySelector('body').appendChild(main_button);
-document.querySelector('body').appendChild(delete_button);
 
 //Ver#2.0
 
