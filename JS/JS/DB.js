@@ -14,6 +14,9 @@ let corsOptions = {
 
 app.use(cors(corsOptions));
 
+/*
+    전체회원조회(GET)
+*/
 app.get('/list', (req, res) => {
     const conn = {
         host : '101.101.211.124',
@@ -39,6 +42,9 @@ app.get('/list', (req, res) => {
     
 });
 
+/*
+    해당회원조회(GET)
+*/
 app.get('/test', (req, res) => {
     const conn = {
         host : '101.101.211.124',
@@ -64,6 +70,9 @@ app.get('/test', (req, res) => {
     
 });
 
+/*
+    해당회원정보업데이트(UPDATE)
+*/
 app.put('/test', (req, res) => {
     const conn = {
         host : '101.101.211.124',
@@ -92,6 +101,9 @@ app.put('/test', (req, res) => {
     
 });
 
+/*
+    해당회원생성(INSERT)
+*/
 app.post('/test', (req, res) => {
     const conn = {
         host : '101.101.211.124',
